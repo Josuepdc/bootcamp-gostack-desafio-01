@@ -41,6 +41,10 @@ server.get("/projects", (req, res) => {
 server.post("/projects", (req, res) => {
     const { id, title } = req.body;
 
+    if(typeof id !== "string" || typeof title !== "string") {
+        return res.status(400).json({ error: "ID and title must be string" });
+    }
+
     projectsData.set(id, {id, title});
 
     return res.json(projectsData.toArray());
@@ -50,6 +54,10 @@ server.post("/projects", (req, res) => {
 server.put("/projects/:id", checkProjectExists, (req, res) => {
     const { id } = req.params;
     const { title } = req.body;
+
+    if(typeof title !== "string") {
+        return res.status(400).json({ error: "Title must be string" });
+    }
 
     const projectData = projectsData.get(id);
     projectData.title = title;
@@ -71,6 +79,10 @@ server.delete("/projects/:id", checkProjectExists, (req, res) => {
 server.post("/projects/:id/tasks", checkProjectExists, (req, res) => {
     const { id } = req.params;
     const { title } = req.body;
+
+    if(typeof title !== "string") {
+        return res.status(400).json({ error: "Title must be string" });
+    }
 
     const projectData = projectsData.get(id);
     if(!projectData.tasks) {
