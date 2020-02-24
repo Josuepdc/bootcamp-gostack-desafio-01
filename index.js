@@ -11,6 +11,16 @@ Map.prototype.toArray = function() {
     return [...this.values()];
 };
 
+// Contador de requests
+let requestsCount = 0;
+
+// Middleware global para log print
+server.use((req, res, next) => {
+    requestsCount++;
+    console.log(`Requests count: ${requestsCount}`);
+    return next();
+});
+
 // Middleware para verificar se existe projeto com a id dada
 function checkProjectExists(req, res, next) {
     const { id } = req.params;
